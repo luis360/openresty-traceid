@@ -4,7 +4,11 @@
 openresty：是一个基于 Nginx 与 Lua 的高性能 Web 平台，其内部集成了大量精良的 Lua 库、第三方模块以及大多数的依赖项。用于方便地搭建能够处理超高并发、扩展性极高的动态 Web 应用、Web 服务和动态网关。
 
 ## 链路追踪如何实现
-基于openresty编辑Lua脚本，在nginx请求接入时，生成唯一的请求ID。
+基于openresty编辑Lua脚本，在nginx请求接入时，生成唯一的请求ID:traceid。
+将traceid写入http header响应头里。
+
+app在使用的时候，直接取当前请求header里的traceid，加入到下一个请求的header里即可传递。
+如php：curl_setopt($ch, CURLOPT_HTTPHEADER, array('traceid: ' . $traceid));
 
 ## 算法
 主机名 + 进程id + 毫秒时间戳 + 时间戳随机数 = 唯一ID
