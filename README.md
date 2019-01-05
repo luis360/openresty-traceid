@@ -25,6 +25,7 @@ docker run -p 80:80 openresty-traceid
 
 ## 代码
 ~~~
+
 local hostname = ngx.var.hostname
 local headers = ngx.req.get_headers()
 local workerid = ngx.worker.id()
@@ -34,7 +35,5 @@ local workerid = ngx.worker.id()
         local onlyString = tostring(hostname .. workerid .. ngx.now()*1000 .. randvar)
         local traceid = ngx.md5(onlyString)
         ngx.req.set_header("traceid", traceid)
-    else
-        ngx.log(ngx.ERR, "worker-id:", workerid)
     end
 ~~~
